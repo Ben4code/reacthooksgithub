@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import 'materialize-css/dist/css/materialize.min.css'
 import './App.css';
+import Navbar from './components/layout/Navbar'
+import Users from './components/Users/Users'
+import { BrowserRouter as Router } from 'react-router-dom'
+import axios from 'axios'
+import Spinner from './components/Spinner/Spinner'
+import Search from './components/Search/Search'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends Component {
+  state = {
+    users: [],
+    loading: false
+  }
+
+  async componentDidMount() {
+    this.setState({ loading: true })
+    const res = await axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
+    this.setState({ users: res.data, loading: false });
+  }
+  
+  filterText = async (text) => {
+    this.setState({ loading: true })
+    const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
+    this.setState({ users: res.data.items, loading: false });
+  }
+
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <Navbar title="GithubFinder" icon="fa fa-github" />
+          <div className="container">
+            <div className="row">
+              <div className="col m12">
+                <div className="card-panel blue white-text center-align" style={{margin: '30px 0', padding: '50px'}}>
+                  <h4>Welcome to GitFinder</h4>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <Search filterText={this.filterText} />
+          {
+            this.state.loading
+              ?
+              <Spinner />
+              :
+              <Users users={this.state.users} />
+          }
+
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
