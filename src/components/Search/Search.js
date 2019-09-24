@@ -31,7 +31,8 @@ export default class Search extends Component {
                         name="text"
                         placeholder="Search users..."
                         onChange={this.changeHandler}
-                        value={this.state.text} />
+                        value={this.state.text} 
+                    />
                 </div>
                 <button className="btn-small red" style={{ display: 'block', width: '100%' }} type="submit">Search <i className="fa fa-search"></i></button>
             </form>

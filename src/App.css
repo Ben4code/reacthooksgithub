@@ -12,7 +12,6 @@
     left: 15%;
     color: red;
     animation: alert .5s ease-in;
-    
 }
 
 @keyframes alert{
@@ -24,4 +23,8 @@
         top: -50px;
         opacity: 1;
     }
+}
+
+.contact span{
+    font-weight: bold;
 }
