@@ -2,3 +2,26 @@
     margin-top: 1.1rem;
     margin-right: 0.3rem;
 }
+.search{
+    position: relative;
+}
+.alert{
+    position: absolute;
+    top: -10px;
+    text-align: center;
+    left: 15%;
+    color: red;
+    animation: alert .5s ease-in;
+    
+}
+
+@keyframes alert{
+    0%{
+        top: 100%;
+        opacity: 0;
+    }
+    100%{
+        top: -50px;
+        opacity: 1;
+    }
+}
