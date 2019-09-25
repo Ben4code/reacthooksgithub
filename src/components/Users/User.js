@@ -3,6 +3,7 @@ import axios from 'axios'
 import Spinner from '../Spinner/Spinner'
 import Git from '../Repos/git.png'
 
+
 export default class User extends Component {
     state = {
         user: {},
@@ -11,19 +12,22 @@ export default class User extends Component {
     }
 
     async componentDidMount() {
+        this.setState({ loading: true });
         const username = this.props.match.params.login;
-        this.getUser(username);
+        const userResponse = await this.getUser(username);
+        const userResponseRepo = await this.getUserRepos(username);
+        this.setState({ user: userResponse.data, loading: false, repos: userResponseRepo.data });
+        console.log(this.state)
     }
 
     getUser = async (username) => {
-        this.setState({ loading: true });
-        const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`);
-
-        const res2 = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
-
-        this.setState({ user: res.data, loading: false, repos: res2.data });
-        console.log(this.state)
+        return axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`);  
     }
+    
+    getUserRepos = async (username) => {
+        return axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
+    }
+
     render() {
         const { name, avatar_url, location, bio, blog, company, login, html_url, followers, following, public_repos, public_gists, hireable } = this.state.user;
         if (this.state.loading) {

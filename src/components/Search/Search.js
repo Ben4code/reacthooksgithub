@@ -1,45 +1,43 @@
-import React, { Component } from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 
 
-export default class Search extends Component {
-    state = {
-        text: ''
+const Search = ({showAlert, filterText}) => {
+    const [text, setText] = useState('')
+    
+    const changeHandler = (e) => {
+        const searchVal = e.target.value;
+        setText(searchVal)
+        // const { name, value } = e.target;
+        // setText({ [name]: value })
     }
 
-    changeHandler = (e) => {
-        const { name, value } = e.target;
-        this.setState({ [name]: value })
-    }
-
-    submitForm = (e) => {
+    const submitForm = (e) => {
         e.preventDefault();
-        let text = this.state.text.trim();
-        if (text === '') {
-            return this.props.showAlert("Please enter a search term");
+        let textVal = text.trim();
+        if (textVal === '') {
+            return showAlert("Please enter a search term");
         }
-        this.props.filterText(text);
-        this.setState({ text: '' })
+        filterText(textVal);
+        setText('');
     }
-
-    render() {
-        return (
-            <form onSubmit={this.submitForm} className="form">
-                <div className="form-input">
-                    <input
-                        type="text"
-                        name="text"
-                        placeholder="Search users..."
-                        onChange={this.changeHandler}
-                        value={this.state.text} 
-                    />
-                </div>
-                <button className="btn-small red" style={{ display: 'block', width: '100%' }} type="submit">Search <i className="fa fa-search"></i></button>
-            </form>
-        )
-    }
+    return (
+        <form onSubmit={submitForm} className="form">
+            <div className="form-input">
+                <input
+                    type="text"
+                    name="text"
+                    placeholder="Search users..."
+                    onChange={changeHandler}
+                    value={text}
+                />
+            </div>
+            <button className="btn-small red" style={{ display: 'block', width: '100%' }} type="submit">Search <i className="fa fa-search"></i></button>
+        </form>
+    )
 }
 
+export default Search;
 
 Search.propTypes = {
     filterText: PropTypes.func.isRequired
