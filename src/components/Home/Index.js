@@ -9,6 +9,7 @@ import Alert from '../Alert/Alert'
 class Home extends Component {
     state = {
         users: [],
+        user: '',
         loading: false,
         showAlertMsg: false
     }
@@ -40,7 +41,6 @@ class Home extends Component {
                                 <h4>Welcome to GitFinder</h4>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div className="container">
@@ -56,7 +56,7 @@ class Home extends Component {
                         ?
                         <Spinner />
                         :
-                        <Users users={this.state.users} />
+                        <Users users={this.state.users}/>
                 }
             </div>
         );

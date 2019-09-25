@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './components/Home/Index'
 import About from './components/About/Index'
 import Contact from './components/Contact/Index'
+import User from './components/Users/User'
 
 class App extends Component {
   render() {
@@ -16,8 +17,9 @@ class App extends Component {
           <Navbar title="GithubFinder" icon="fa fa-github" />
            <Switch>
             <Route exact path="/" component={Home}/>
-            <Route exact path="/about" component={About}/>
-            <Route exact path="/contact" component={Contact}/>
+            <Route  path="/about" component={About}/>
+            <Route  path="/contact" component={Contact}/>
+            <Route  path="/user/:login" component={User}/>
           </Switch>
         </div>
       </Router>

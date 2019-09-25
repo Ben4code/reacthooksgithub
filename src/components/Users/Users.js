@@ -2,14 +2,14 @@ import React from 'react'
 import UserItem from './UserItem'
 import PropTypes from 'prop-types'
 
-const Users = ({ users }) => {
+const Users = ( props ) => {
 
     const showUserItem = () => {
-        return users.map(user => {
-            const { id, avatar_url, login, html_url } = user;
+        return props.users.map(user => {
+            const { id, avatar_url, login } = user;
             return (
                 <div className="container" key={id}>
-                    <UserItem name={login} Img={avatar_url} url={html_url} />
+                    <UserItem name={login} Img={avatar_url} viewUser={props.viewUser}/>
                 </div>
             )
         })

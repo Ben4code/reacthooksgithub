@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
 
  const UserItem = (props) => {
 
-    const { Img, name, url } = props;
+    const { Img, name } = props;
     return (
         <div className="col m3">
             <div className="card-panel center-align">
@@ -11,7 +12,7 @@ import PropTypes from 'prop-types'
                     style={{ width: '25rem', height: '15rem', objectFit: 'cover' }}
                 />
                 <h6>{name}</h6>
-                <a href={`${url}`} target="_blank" rel="noopener noreferrer" className="btn-small red pulse">View Profile</a>
+                <Link to={`/user/${name}`}  className="btn-small red pulse">View Profile</Link>
             </div>
         </div>
     )
