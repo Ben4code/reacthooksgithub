@@ -1,3 +1,9 @@
+body{
+    background: #eee;
+}
+.card{
+    background: #fff;
+}
 .brand-logo i{
     margin-top: 1.1rem;
     margin-right: 0.3rem;
@@ -36,11 +42,25 @@
     margin: 3rem 1.5rem 1rem;
 }
 .chip_group{    
-    margin: 2rem 0;
+    margin: 1rem 0;
     display: flex;
     justify-content: space-around;
 }
 .chip{
-    margin: 0 2rem;
     color: #fff!important;
+}
+.collection{
+    margin: 0.2rem 1.5rem 0.5rem;
+}
+.secondary-content{
+    font-size: 4rem;
+    color: orangered;
+}
+.collection-item{
+    position: relative;
+}
+.collection-item span.title{
+    position: absolute;
+    margin-left: 1rem;
+    top: 25%;
 }

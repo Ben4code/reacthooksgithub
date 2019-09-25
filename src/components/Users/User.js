@@ -1,20 +1,29 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Spinner from '../Spinner/Spinner'
+import Git from '../Repos/git.png'
 
 export default class User extends Component {
     state = {
         user: {},
-        loading: false
+        loading: false,
+        repos: ''
     }
 
     async componentDidMount() {
-        this.setState({ loading: true });
-        const login = this.props.match.params.login;
-        const res = await axios.get(`https://api.github.com/users/${login}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`);
-        this.setState({ user: res.data, loading: false });
+        const username = this.props.match.params.login;
+        this.getUser(username);
     }
 
+    getUser = async (username) => {
+        this.setState({ loading: true });
+        const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`);
+
+        const res2 = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
+
+        this.setState({ user: res.data, loading: false, repos: res2.data });
+        console.log(this.state)
+    }
     render() {
         const { name, avatar_url, location, bio, blog, company, login, html_url, followers, following, public_repos, public_gists, hireable } = this.state.user;
         if (this.state.loading) {
@@ -61,7 +70,22 @@ export default class User extends Component {
                     </div>
                 </div>
 
-
+                {
+                    this.state.repos &&
+                    this.state.repos.map(repo => {
+                        return (
+                            <ul key={repo.full_name} className="card collection">
+                                <li className="collection-item ">
+                                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                                        <img src={Git} alt="git" width="30" className="circle" />
+                                        <span className="title">{repo.full_name.toUpperCase()}</span>
+                                    </a>
+                                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer" className="secondary-content">&rsaquo;</a>
+                                </li>
+                            </ul>
+                        )
+                    })
+                }
             </div>
         )
     }
