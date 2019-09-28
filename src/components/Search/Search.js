@@ -3,33 +3,27 @@ import PropTypes from 'prop-types'
 
 
 const Search = ({showAlert, filterText}) => {
-    const [text, setText] = useState('')
+    const [text, setText] = useState({searchText: ''})
     
     const changeHandler = (e) => {
-        const searchVal = e.target.value;
-        setText(searchVal)
-        // const { name, value } = e.target;
-        // setText({ [name]: value })
+        setText({ ...text, [e.target.name]: e.target.value })
     }
 
     const submitForm = (e) => {
         e.preventDefault();
-        let textVal = text.trim();
-        if (textVal === '') {
-            return showAlert("Please enter a search term");
-        }
-        filterText(textVal);
-        setText('');
+        if (text.searchText.trim() === '') return showAlert("Please enter a search term");
+        filterText(text.searchText.trim());
+        setText({searchText: ''});
     }
     return (
         <form onSubmit={submitForm} className="form">
             <div className="form-input">
                 <input
                     type="text"
-                    name="text"
+                    name="searchText"
                     placeholder="Search users..."
                     onChange={changeHandler}
-                    value={text}
+                    value={text.searchText}
                 />
             </div>
             <button className="btn-small red" style={{ display: 'block', width: '100%' }} type="submit">Search <i className="fa fa-search"></i></button>
