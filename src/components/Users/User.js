@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useEffect, useContext } from 'react'
 import Spinner from '../Spinner/Spinner'
 import Git from '../Repos/git.png'
+import GithubContext from '../Context/GithubContext'
 
 
 
 const User = ({ match, history }) => {
-    const [user, setUser] = useState({})
-    const [loading, setLoading] = useState(false)
-    const [repos, setRepos] = useState('')
+    const githubContext = useContext(GithubContext);
+    const {user, loading, repos, getUser} = githubContext;
 
     useEffect(() => {
-        setLoading(true);
         const username = match.params.login;
-        axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
-        .then(userRes => {
-            axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
-            .then(reposRes => {
-                setUser(userRes.data)
-                setRepos(reposRes.data)
-                setLoading(false);
-            })
-        })
+        getUser(username)
     }, [match.params.login])
 
 
@@ -71,7 +61,7 @@ const User = ({ match, history }) => {
             </div>
 
             {
-                    repos &&
+                    repos.length > 0 &&
                     repos.map(repo => {
                         return (
                             <ul key={repo.full_name} className="card collection">

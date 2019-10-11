@@ -1,33 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Users from '../Users/Users'
-import axios from 'axios'
 import Spinner from '../Spinner/Spinner'
 import Search from '../Search/Search'
 import Alert from '../Alert/Alert'
-
+import GithubContext from '../Context/GithubContext'
 
 const Home = () => {
-    const [users, setUsers] = useState([])
-    const [loading, setLoading] = useState(false)
+    const githubContext = useContext(GithubContext)
+    const {users, getUsers} = githubContext;
     const [showAlertMsg, setAlert] = useState(false)
 
     useEffect(() => {
-        setLoading(true);
-        axios.get(`https://api.github.com/users?client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
-            .then(res => {
-                setUsers(res.data)
-                setLoading(false);
-            })
-    }, []);
-
-    const filterText = (text) => {
-        setLoading(true);
-        axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_CLIENT_ID}&client_secrete=${process.env.REACT_APP_GITHUB_CLIENT_SECRETE}`)
-            .then(res => {
-                setUsers(res.data.items)
-                setLoading(false);
-            })
-    };
+        getUsers();
+    }, [users]);
 
     const getAlert = (msg) => {
         setAlert(msg);
@@ -49,7 +34,7 @@ const Home = () => {
                 <div className="row">
                     <div className="col m3 offset-m9 search">
                         {showAlertMsg ? <Alert msg={showAlertMsg} /> : null}
-                        <Search filterText={filterText} showAlert={getAlert} />
+                        <Search showAlert={getAlert} />
                     </div>
                 </div>
             </div>
@@ -58,7 +43,7 @@ const Home = () => {
                     ?
                     <Spinner />
                     :
-                    <Users users={users} />
+                    <Users />
             }
         </div>
     );

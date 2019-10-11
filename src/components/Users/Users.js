@@ -1,17 +1,19 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import UserItem from './UserItem'
-import PropTypes from 'prop-types'
+import GithubContext from '../Context/GithubContext'
 
-const Users = (props) => {
+const Users = () => {
+    const githubContext = useContext(GithubContext);
+    const {users} = githubContext;
 
     return (
         <div className="row">
             {
-                props.users.map(user => {
+                users.map(user => {
                     const { id, avatar_url, login } = user;
                     return (
                         <div className="container" key={id}>
-                            <UserItem name={login} Img={avatar_url} viewUser={props.viewUser} />
+                            <UserItem name={login} Img={avatar_url} />
                         </div>
                     )
                 })
@@ -22,6 +24,3 @@ const Users = (props) => {
 
 export default Users;
 
-Users.propTypes = {
-    users: PropTypes.array.isRequired
-}

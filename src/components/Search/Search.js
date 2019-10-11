@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import PropTypes from 'prop-types'
+import GithubContext from '../Context/GithubContext'
 
+const Search = ({showAlert}) => {
+    const githubContext = useContext(GithubContext);
 
-const Search = ({showAlert, filterText}) => {
     const [text, setText] = useState({searchText: ''})
     
     const changeHandler = (e) => {
@@ -12,9 +14,10 @@ const Search = ({showAlert, filterText}) => {
     const submitForm = (e) => {
         e.preventDefault();
         if (text.searchText.trim() === '') return showAlert("Please enter a search term");
-        filterText(text.searchText.trim());
+        githubContext.filterText(text.searchText.trim())
         setText({searchText: ''});
     }
+
     return (
         <form onSubmit={submitForm} className="form">
             <div className="form-input">
@@ -33,9 +36,6 @@ const Search = ({showAlert, filterText}) => {
 
 export default Search;
 
-Search.propTypes = {
-    filterText: PropTypes.func.isRequired
-}
 Search.propTypes = {
     showAlert: PropTypes.func.isRequired
 }
